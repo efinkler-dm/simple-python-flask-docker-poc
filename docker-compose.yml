@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+    db:
+        image: postgres:13
+        environment:
+            - POSTGRES_PASSWORD=mysecretpassword
+        ports:
+            - 5435:5432
+    web:
+        build: .
+        working_dir: /usr/src/app
+        environment:
+            - FLASK_APP=app
+        command: ["flask", "run", "--host=0.0.0.0"]
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - 5005:5000
+
+        depends_on:
+            - db
